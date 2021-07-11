@@ -1,0 +1,104 @@
+installing ansible - 
+
+pip install ansible
+yum install ansible
+apt-get install ansible
+apk add ansible
+
+-------------------------------------------------------------------------
+Managing Servers
+ 
+creating hosts file for ansible - 
+
+after installing ansible do - 
+mkdir /etc/ansible
+touch /etc/ansible/hosts
+add hosts in the file /etc/ansible/hosts that ansible can work with
+
+hosts file format - 
+
+
+[servers]
+192.168.10.2
+192.168.10.5
+[instances]
+192.168.11.7
+192.168.10.6
+
+if u want to create hosts file in custom location use -i <path to hosts file > in ansible-playbook
+
+ex : ansible-playbook -i hosts tes.yml
+
+--------------------------------------------------------------------------------
+
+Basic: Running Commands
+
+$ansible all -m ping -u root
+
+all - Use all defined servers from the inventory file
+-m ping - Use the "ping" module, which simply runs the ping command and returns the results
+-u root - Log into servers using user root
+
+$ansible all -m shell -a 'apt-get install nginx' -u root
+
+-m shell - Use the "shell" module
+-a flag is used to pass any arguments to the shell module
+
+$ansible all -s -m apt -a 'pkg=nginx state=installed' - for apt
+$ansible all -s -m apk -a 'name=nginx state=installed' - for apk
+
+
+use -b to switch to root
+use -b -K to switch to rpompt passwd to switch to root
+
+--------------------------------------------------------------------------------
+
+Basic Playbook
+
+for hosts refer section Managing Servers
+
+in ubuntu
+
+vi nginx.yml
+
+---
+- hosts: servers,instances
+  tasks:
+   - name: Install Nginx
+     apt: pkg=nginx state=installed update_cache=true
+	
+in alpine linux
+
+---
+- hosts: servers,instances
+  tasks:
+   - name: Install Nginx
+     apk: name=nginx state=installed update_cache=true
+	 
+$ ansible-playbook nginx.yml
+
+---
+- hosts: rev
+  tasks:
+   - name: adding lines .bashrc
+     blockinfile:
+       path: /root/.profile
+       block: |
+         alias ll='ls -lrth'	 
+	 
+blobkline module is used to apped lines toa file
+the above yml adds the lines in block to the bottom of file /root/.profile
+
+		 
+
+---
+- hosts: rev
+  tasks:
+   - name: adding lines .bashrc
+     blockinfile:
+       path: /root/.profile
+       block: |
+         alias ll='ls -lrth'
+   - name: source command
+     shell: source /root/.profile   
+
