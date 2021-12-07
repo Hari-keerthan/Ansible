@@ -1,0 +1,13 @@
+playbook.yml to install and start two services using yum module  - 
+cat playbook.yml
+---
+- name: install and start two services using yum module
+  hosts: test
+  become: yes
+  tasks:
+    - name: install ntpd and nginx
+      yum:
+	     name: 
+		    - ntpd
+			- nginx
+

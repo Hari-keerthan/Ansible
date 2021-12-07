@@ -1,0 +1,60 @@
+playbook.yml to copy files using copy module  - 
+cat playbook.yml
+---
+- name: copy multiple files from a location in ansible server to another location on the server
+  hosts: test
+  become: yes
+  tasks:
+    - name: copying files
+      copy:
+	    src: "{{ item.src }}"
+		dest: "{{  item.dest }}"
+		owner: root
+		group: root
+		mode: 644
+	   with_items:
+	      - src: <absolute path to source file 1>
+		    dest: <absolute path to destination file 1>
+		  - src: <absolute path to source file 2>
+		    dest: <absolute path to destination file 2>
+			
+			
+ex -
+
+---
+- name: copy files
+  hosts: test
+  tasks:
+    - name: copy files task
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest  }}"
+        owner: root
+        group: root
+        mode: 0644
+      with_items:
+        - src: hosts
+          dest: /tmp
+		  
+the above playbook copies file name with hosts from ansible machine to remote machine but if we want to copy a file from one place in remote machine to another place in remote machine then use remote_src: yes
+
+ex - 
+---
+- name: copy files
+  hosts: test
+  tasks:
+    - name: copy files task
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest  }}"
+        remote_src: yes
+        owner: root
+        group: root
+        mode: 0644
+      with_items:
+        - src: /tmp/hosts
+          dest: /root
+
+
+pre tasks - if haave a task that needs to be executed first use this
+

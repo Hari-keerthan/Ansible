@@ -1,0 +1,167 @@
+reference - https://ansible.jeffgeerling.com/
+
+
+
+ansible -i hosts test -m ping --extra-vars 'ansible_ssh_user=<username to login with> ansible_ssh_password=<users password>'
+ansible -i hosts test -m ping --extra-vars 'ansible_ssh_user=<username to login with> ansible_ssh_password=<users password> ansible_ssh_common_args="-o StrictHostKeyChecking=no"'
+ansible -i hosts test -m ping -u <username> -k (enter passowrd when prompted)
+ansible -i hosts test -m ping -u root --extra-vars 'ansible_ssh_password=root'
+
+
+cat /home/mobaxterm/hostshosts
+#application servers
+[test]
+192.168.1.46
+
+#db servers
+[db]
+192.168.1.34
+
+#group of group servers
+[multp:children]
+testdb
+
+#ssh user to use while logging to application servers
+[test:vars]
+ansible_ssh_user=<username to login with>
+ansible_ssh_password=<users password>
+
+
+cat ansible.cfg
+[defaults]
+INVENTORY=/home/mobaxterm/hosts
+
+
+
+playbook.yml to install and start a service  - 
+
+---
+- hosts: test
+  become: yes
+  tasks:
+    - name: install ntpd
+      yum: name=ntp state=present
+    - name: start ntp
+      service: name=ntpd state=started enabled=yes
+
+
+command to run this playbook - ansible-playbook playbook.yml -u root --extra-vars 'ansible_ssh_password=root'
+
+playbook.yml to install and start a service using builtin package module  - 
+cat playbook.yml
+---
+- hosts: test
+  become: yes
+  tasks:
+    - name: install ntpd
+      ansible.builtin.package: name=httpd state=present
+    - name: start ntp
+      service: name=httpd state=started enabled=yes
+	  
+command to get documentation on any module       - ansible-doc <odule name>	  
+command to install a package without a yaml      - ansible -i <inventory file> <host grop> -b -m yum -a "name=nginx state=present"
+command to start a package without a yaml        - ansible -i <inventory file> <host grop> -b -m service -a "name=nginx state=started enabled=yes"
+command to know what ansible sees about a system - ansible -i <inventory file> <host grop> -m setup
+command to run only one 1 server                 - ansible -i <inventory file> <host grop> -a "free -h" --limit "192.168.1.46"
+
+
+
+
+if you want the ansible command to run inbackground use -P 0
+if you want to limit the amount of time you want to run the command use -B <time in seconds> ,  if the command exceeds the time limit set in -B then command is killed by ansible
+
+ex - ansible -i <inventory file> <host grop> -B 3600 -P 0 -a "yum update -y"
+
+this gives an output of job id and we can track the job by using command - ansible -i <inventory file> <host grop> -m async_status -a "jid=<job id from the above command>
+
+if you want to use pipe in linux command use shell module of else itt will error out - ex - ansible -i <inventory file> <host grop> -m shell -a "tail /var/log/messages | grep ansible | wc -l"
+
+
+playbook.yaml to run a shell script - 
+cat playbook.yml
+---
+- name: shell script playbook
+  hosts: all
+  tasks:
+     -name:script execution
+	  shell: |
+	     yum install httpd -y --silent
+		 service httpd start
+		 chkconfig httpd on
+		 
+		 
+playbook.yml to install and start two services using yum module  - 
+cat playbook.yml
+---
+- name: install and start two services using yum module
+  hosts: test
+  become: yes
+  tasks:
+    - name: install ntpd and nginx
+      yum:
+	     name: 
+		    - ntpd
+			- nginx
+		 state: present	
+		 
+
+playbook.yml to copy files using copy module  - 
+cat playbook.yml
+---
+- name: copy multiple files from a location in ansible server to another location on the server
+  hosts: test
+  become: yes
+  tasks:
+    - name: copying files
+      copy:
+	    src: "{{ item.src }}"
+		dest: "{{  item.dest }}"
+		owner: root
+		group: root
+		mode: 644
+	   with_items:
+	      - src: <absolute path to source file 1>
+		    dest: <absolute path to destination file 1>
+		  - src: <absolute path to source file 2>
+		    dest: <absolute path to destination file 2>
+			
+			
+ex -
+
+---
+- name: copy files
+  hosts: test
+  tasks:
+    - name: copy files task
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest  }}"
+        owner: root
+        group: root
+        mode: 0644
+      with_items:
+        - src: hosts
+          dest: /tmp
+		  
+the above playbook copies file name with hosts from ansible machine to remote machine but if we want to copy a file from one place in remote machine to another place in remote machine then use remote_src: yes
+
+ex - 
+---
+- name: copy files
+  hosts: test
+  tasks:
+    - name: copy files task
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest  }}"
+        remote_src: yes
+        owner: root
+        group: root
+        mode: 0644
+      with_items:
+        - src: /tmp/hosts
+          dest: /root
+
+
+pre tasks - if haave a task that needs to be executed first use this
+

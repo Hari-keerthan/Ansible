@@ -1,0 +1,32 @@
+---
+--- without flush ( flush) (handlers are ran after all the tasks are frun so if any task fails then the task in handler will not be ran, in that case use flush)
+- name: install apache
+  hosts: test
+  become: true
+  
+  handlers:
+    - name: restart apache
+      service: name=httpd state=restarted
+      
+  tasks:
+    - name: ensure apache is installed
+      yum:
+        name: httpd
+        state: present
+    
+    - name: copy config file
+      copy:
+        src: test.conf
+        dest: /etc/httpd/conf.d/test.conf
+      notify: restart apache
+      
+    - name: making sure handler are run
+      meta: flush_handlers
+    
+    - name: ensure apache is started and enabled on boot
+      service:
+        name: httpd
+        state: started 
+        enabled: true        
+
+

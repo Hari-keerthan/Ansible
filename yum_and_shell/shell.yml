@@ -1,0 +1,12 @@
+
+playbook.yaml to run a shell script - 
+cat playbook.yml
+---
+- name: shell script playbook
+  hosts: all
+  tasks:
+     -name:script execution
+	  shell: |
+	     yum install httpd -y --silent
+		 service httpd start
+
