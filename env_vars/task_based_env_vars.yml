@@ -1,0 +1,35 @@
+---
+- name: install apache
+  hosts: test
+  become: true
+  
+  environtment:
+     dest: /tmp
+      
+  tasks:
+    - name: download file 1 size 20mb
+      get_url:
+        url: http://ipv4.download.thinkbroadband.com/20MB.zip
+    
+    - name: download file 2 size 50 mb 
+      get_url:
+        url: http://ipv4.download.thinkbroadband.com/50MB.zip      
+
+--- the above module needs a dest option to write the file to but we gave that in environment variable which applies to all the tasks
+
+--- the above playbook can also be written as below
+
+- name: install apache
+  hosts: test
+  become: true
+  
+  environtment:
+     dest: /tmp
+      
+  tasks:
+    - name: download file 1 size 20mb
+      get_url:
+        url: 
+           - "http://ipv4.download.thinkbroadband.com/20MB.zip"
+           - "http://ipv4.download.thinkbroadband.com/50MB.zip"
+

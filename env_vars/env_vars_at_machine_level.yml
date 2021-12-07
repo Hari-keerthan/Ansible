@@ -1,0 +1,24 @@
+---
+- name: install apache
+  hosts: test
+  become: true
+      
+  tasks:
+    - name: setting environment variable for a user
+      lineinfile:
+        dest: "/home/hary/.bash_profile"
+        regexp: "^ll="
+        line: "ll='ls -ltrh'"
+
+--- in the above module it searches for line starting with ll= and replaces with ll='ls -ltrh' and if it doesnt find line starting with ll then it will add a line ls='ls -ltrh' at the EOF         
+    
+    - name: get the value of a environmental variable
+      shell: "source /home/hary/.bash_profile && echo $ll"
+      register: foo
+      become:false
+      
+--- in the above module it runs the command ad output of $ll is stored in variable foo      
+      
+    - debug: msg="the variable is {{  foo.stdout }}
+
+
