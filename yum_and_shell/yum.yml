@@ -7,7 +7,6 @@ cat playbook.yml
   tasks:
     - name: install ntpd and nginx
       yum:
-	     name: 
-		    - ntpd
-			- nginx
-
+	    name: 
+		   - ntpd
+		   - nginx
