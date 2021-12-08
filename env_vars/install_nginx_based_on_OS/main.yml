@@ -1,0 +1,30 @@
+playbook.yml to install and start services using yum module  - 
+cat playbook.yml
+---
+- name: install and start two services using yum module
+  hosts: test
+  become: true
+  
+  pre_tasks:
+     - debug: var=ansible_os_family
+--- the above line shows tha name of the family the server belongs to i.e RedHat Centos Ubuntu etc     
+--- another way to find os family is use command ansible test -m setup -a "filter=ansible_os_family" -u root -k
+     - name: load variables file
+       include_vars: "{{ item }}"
+       with_first_found:
+         - "vars/apache_{{ ansible_os_family }}.yml
+         - "vars/apache_default.yml"
+  
+  tasks:
+    - name: install nginx
+      yum: 
+        name: "{{ package_name }}"
+        state: present
+    - name: start service
+      service: "{{ package_service_name }}"
+      state: started
+      enabled: true
+
+      
+      
+

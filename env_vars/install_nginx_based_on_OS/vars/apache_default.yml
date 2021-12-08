@@ -1,0 +1,4 @@
+---making default OS as Ubuntu
+---
+package_name: apache2
+package_service_name: apache2
