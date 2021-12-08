@@ -18,7 +18,7 @@ cat playbook.yml
     - name: start serive
       service:
       name: "{{ packages }}"
-      state: present
+      state: started
       enabled: true
       
       
@@ -42,5 +42,5 @@ cat playbook.yml
     - name: start serive
       service:
       name: "{{ package_name }}"
-      state: present
+      state: started
       enabled: true 
