@@ -27,7 +27,7 @@ cat playbook.yml
       state: started
       enabled: true
       register: bar
-    - debug: var=bar 
+    - debug: var=bar.result
 
       
       
