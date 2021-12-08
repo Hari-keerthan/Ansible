@@ -6,6 +6,7 @@ ansible -i hosts test -m ping --extra-vars 'ansible_ssh_user=<username to login 
 ansible -i hosts test -m ping --extra-vars 'ansible_ssh_user=<username to login with> ansible_ssh_password=<users password> ansible_ssh_common_args="-o StrictHostKeyChecking=no"'
 ansible -i hosts test -m ping -u <username> -k (enter passowrd when prompted)
 ansible -i hosts test -m ping -u root --extra-vars 'ansible_ssh_password=root'
+ansible test -m lineinfile -u root -k -a 'path=/home/hary/.bash_profile line="ll=ls -ltrh"' ----- command to adda line to a file
 
 
 cat /home/mobaxterm/hostshosts
