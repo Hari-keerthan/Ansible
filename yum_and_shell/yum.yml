@@ -10,3 +10,4 @@ cat playbook.yml
 	    name: 
 		   - ntpd
 		   - nginx
+            state: present
