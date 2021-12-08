@@ -6,7 +6,7 @@
   tasks:
     - name: setting environment variable for a user
       lineinfile:
-        dest: "/home/hary/.bash_profile"
+        path: "/home/hary/.bash_profile"
         regexp: "^ll="
         line: "ll='ls -ltrh'"
 
