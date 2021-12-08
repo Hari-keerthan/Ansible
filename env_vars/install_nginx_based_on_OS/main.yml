@@ -20,10 +20,14 @@ cat playbook.yml
       yum: 
         name: "{{ package_name }}"
         state: present
+      register: foo
+    - debug: var=foo  
     - name: start service
       service: "{{ package_service_name }}"
       state: started
       enabled: true
+      register: bar
+    - debug: var=bar 
 
       
       
