@@ -1,0 +1,18 @@
+playbook.yml to encrypt a variable using ansible vault in remote machine  - 
+cat playbook.yml
+---
+- name: encrypt a variable
+  hosts: test
+  
+  vars_files:
+    - vars/api_key.yml
+  
+  tasks:
+    - name: Echo a variable to test encryption
+      shell: echo $MY_KEY
+      environment:
+        MY_KEY: "{{ myapp_key }}"
+      register: echo_result
+      
+    - name: Show the result
+
