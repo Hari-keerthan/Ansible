@@ -1,1 +1,2 @@
+in order to use ansible vault first we need to encrypt the yml file conatining the password using command [ ansible-vault encrypt vars/api_key.yml ] then to run the playbook use command - ansible-playbook main.yml --ask-vault-pass, this will ask for password enter the password , if you dont wwant to giv passowrd then create a file conatining password and pass it to command - ansible-playbook main.yml --vault-password-file <password file>
 
