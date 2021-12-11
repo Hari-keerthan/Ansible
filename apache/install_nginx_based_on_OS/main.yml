@@ -6,7 +6,8 @@
   become: true
   
   pre_tasks:
-     - debug: var=ansible_os_family
+     - debug: 
+         msg: "{{ ansible_os_family }}"
 # the above line shows tha name of the family the server belongs to i.e RedHat Centos Ubuntu etc     
 # another way to find os family is use command ansible test -m setup -a "filter=ansible_os_family" -u root -k
      - name: load variables file
@@ -27,7 +28,7 @@
       state: started
       enabled: true
       register: bar
-    - debug: var=bar.results
+    - debug: var=bar
 
       
       
