@@ -1,5 +1,5 @@
-playbook.yml to encrypt a variable using ansible vault in remote machine  - 
-cat playbook.yml
+#playbook.yml to encrypt a variable using ansible vault in remote machine  - 
+#cat playbook.yml
 ---
 - name: encrypt a variable
   hosts: test
