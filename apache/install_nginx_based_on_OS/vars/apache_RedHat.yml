@@ -1,0 +1,5 @@
+---this is yml for RedHat and centos
+---
+package_name: httpd
+package_service_name: httpd
+conf_dir: /etc/httpd/conf.d

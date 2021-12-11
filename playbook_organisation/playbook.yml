@@ -1,0 +1,26 @@
+---
+- name: install and start nginx
+  hosts: test
+  become: true
+  
+  handlers:
+    - import_tasks: handlers/apache.yml       
+     
+  pre_tasks:
+     - debug:
+         msg: "{{ ansible_os_family }}"
+#the above line shows tha name of the family the server belongs to i.e RedHat Centos Ubuntu etc     
+#another way to find os family is use command ansible test -m setup -a "filter=ansible_os_family" -u root -k
+     - name: load variables file
+       include_vars: "{{ item }}"
+       with_first_found:
+         - "vars/apache_{{ ansible_os_family }}.yml"
+         - "vars/apache_default.yml"
+  
+  tasks:
+    - import_tasks: tasks/apache.yml
+
+      
+      
+
+

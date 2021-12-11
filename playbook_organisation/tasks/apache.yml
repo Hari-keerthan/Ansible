@@ -1,0 +1,25 @@
+---
+- name: install nginx
+  yum: 
+    name: "{{ package_name }}"
+    state: present
+  register: foo
+  
+- debug: 
+    var: foo
+
+- name: copy test config file
+  copy:
+    src: files/test.conf
+    dest: "{{ conf_dir }}/test.conf"
+  notify: restart apache
+
+- name: start service
+  service: 
+    name: "{{ package_service_name }}"
+    state: started
+    enabled: true
+  register: bar
+
+- debug:
+    var: bar.results

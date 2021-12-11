@@ -1,0 +1,4 @@
+---this is yml for RedHat and centos
+---
+package_name= httpd
+package_service_name= httpd
