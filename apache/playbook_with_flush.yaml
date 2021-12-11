@@ -1,5 +1,5 @@
 ---
---- without flush ( flush) (handlers are ran after all the tasks are frun so if any task fails then the task in handler will not be ran, in that case use flush)
+# without flush ( flush) (handlers are ran after all the tasks are frun so if any task fails then the task in handler will not be ran, in that case use flush)
 - name: install apache
   hosts: test
   become: true
