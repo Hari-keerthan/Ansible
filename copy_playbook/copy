@@ -1,5 +1,5 @@
-playbook.yml to copy files using copy module  - 
-cat playbook.yml
+#playbook.yml to copy files using copy module  - 
+#cat playbook.yml
 ---
 - name: copy multiple files from a location in ansible server to another location on the server
   hosts: test
@@ -13,13 +13,11 @@ cat playbook.yml
 		group: root
 		mode: 644
 	   with_items:
-	      - src: <absolute path to source file 1>
-		    dest: <absolute path to destination file 1>
-		  - src: <absolute path to source file 2>
-		    dest: <absolute path to destination file 2>
+	      - { src: '<absolute path to source file 1>' , dest: '<absolute path to destination file 1>' }
+	      - { src: '<absolute path to source file 2>' , dest: '<absolute path to destination file 2>' }
 			
 			
-ex -
+#ex -
 
 ---
 - name: copy files
