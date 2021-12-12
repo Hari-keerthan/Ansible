@@ -1,0 +1,16 @@
+# roles/example/tasks/debian.yml
+
+- name: Install web server
+  ansible.builtin.apt:
+    name: "{{ package_name }}"
+    state: present
+
+- name: start web service
+  service:
+    name: "{{ package_name }}"
+    state: started
+    enabled: true
+  register: output
+
+- debug: var=output
+

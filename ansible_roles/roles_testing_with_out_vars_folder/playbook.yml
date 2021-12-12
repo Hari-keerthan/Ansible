@@ -1,0 +1,7 @@
+---
+- name: install and start nginx
+  hosts: test
+  become: true
+
+  roles:
+    - apache.role 
