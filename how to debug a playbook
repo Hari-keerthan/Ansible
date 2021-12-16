@@ -1,0 +1,12 @@
+roles_path=./roles
+ansible-galaxy install ROLENAME
+ansible-galaxy install -r requirements.txt
+to create role directory sructure use - ansible-galaxy role init <role name>
+
+how to debug a playbook -
+ 
+command to install yamllint - pip3 install yamllimt
+command to checck the syntax of yaml - yamllint <filename>
+command to check if playbook is fine - ansible-playbook playbook.yml --syntax-check
+command to install ansible-lint - pip3 install ansible-lint
+command to know how to write best playbook - ansible-lint playbook.yml
