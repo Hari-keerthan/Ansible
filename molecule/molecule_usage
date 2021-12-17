@@ -1,0 +1,11 @@
+-- pip install 'molecule[docker]'
+-- molecule init role <role name> --driver-name docker
+now edit the main.yml in <rolename>/tasks/ and also add other tasks if needed
+now edit the author name in -- vi meta/main.yml
+now run -- molecule test -- to do end to end testing
+if you want the container to stay after testing use command -- molecule converge
+to go into the launcher conatiner use command - molecule login
+to delete the conatiner use  -- molecule destroy
+
+if you want to the change the os (centos, ubuntu ,fedora ) edit the image name in <rolename>/molecule/default/molecule.yml
+

@@ -1,0 +1,21 @@
+---
+- name: Install web server
+  ansible.builtin.yum:
+    name: "{{ package_name }}"
+    state: present
+  register: output
+
+- debug: var=output
+#- name: start web service
+#  service:
+#    name: "{{ package_name }}"
+#    state: started
+#    enabled: true
+#  register: output
+#- debug: var=output
+- name: Restart httpd
+  service: 
+    name: "{{ package_name }}"
+    state: restarted
+  register: output
+- debug: var=output
