@@ -1,0 +1,50 @@
+---
+- name: test task
+  hosts: all
+  
+  vars:
+    package_name: "{{ 'httpd' if ansible_facts['os_family']|lower == 'redhat' else 'apache2' }}"
+  
+  pre_tasks:
+    - name: update apt-cache
+      apt:
+        update_cache: true
+        cache_vaild_time: 3600
+      when: ansible_facts['os_family']|lower == 'debian'
+      
+  handlers:
+    - name: restart apache
+      service:
+        name: "{{ package_name }}"
+        state: restarted
+        
+  tasks:
+    - name: Install web server
+      package:
+        name: "{{ package_name }}"
+        state: present
+      register: output
+    
+    - debug: var=output
+    
+    - name: Copy a web page.
+      copy:
+        content: |
+          <html>
+          <head><title>Hello ansible!</title></head>
+          <body>Hello ansible!</body>
+          </html>
+        dest: "/var/www/html/index.html"
+        mode: 0664
+      notify: restart apache
+    
+    - name: start web service
+      service:
+        name: "{{ package_name }}"
+        state: started
+        enabled: true
+      register: output
+    
+    - debug: var=output
+   
+    

@@ -1,0 +1,9 @@
+how to create a image with systemd as init process -
+
+cat>dockerfile
+FROM docker.io/pycontribs/centos:8
+EXPOSE 80
+CMD [ "/sbin/init" ]
+
+
+docker build -t <image name> .

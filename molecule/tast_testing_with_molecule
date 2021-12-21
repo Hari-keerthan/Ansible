@@ -1,0 +1,50 @@
+Task testing with molecule
+
+create a dir -mkdir task_test_dir
+
+create  a main.yml file, this file is the playbook that we need to testing
+
+now inside the task_test dir run command - molecule init scenario --driver-name docker
+
+now edit the file task_test/molecule/default/converge.yml with following way -
+remove the tasks section completely and add the following line
+- import_playbook: ../../main.yml < this is the path of the playbook yml file that we want to test>
+
+now if we want to test the play book with centos or redhat it will fail as the system is not booted with systemd, so ceate a image that boots with systemd and use that or use geerlingguy/docker-centos8-ansible:latest this image
+
+steps to edit the image on which we want to test the playbook against -
+vi task_test/molecule/default/molecule.yml ---- in this file edit the image name
+
+if you want to use geerlingguy/docker-centos8-ansible:latest this image then add these extra propeties under platforms: 
+    command: ""
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+	
+the final molecule.yml looks like this - 
+
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+platforms:
+  - name: instance
+    image: "geerlingguy/docker-centos8-ansible:latest"
+    pre_build_image: true
+    command: ""
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+provisioner:
+  name: ansible
+verifier:
+  name: ansible
+
+
+
+
