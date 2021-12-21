@@ -7,3 +7,7 @@ CMD [ "/sbin/init" ]
 
 
 docker build -t <image name> .
+
+setsebool -P container_manage_cgroup true
+
+docker run -d <image name>
