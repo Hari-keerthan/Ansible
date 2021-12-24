@@ -46,5 +46,36 @@
       register: output
     
     - debug: var=output
-   
+       - setup:
+        filter: ansible_fqdn
+      register: hostname
+
+    - debug:
+        msg: "{{ hostname }}"
+
+    - name: Verify Apache is serving web requests.
+      uri:
+        url: http://{{ hostname }}/
+        status_code: 200
+      register: output
+
+    - debug: var=output
+---- setup module in 2nd way
+    - setup:
+        filter: ansible_fqdn
+      register: hostname
+
+    - debug:
+        msg: "{{ hostname }}"
+
+    - name: Verify Apache is serving web requests.
+      uri:
+        url: http://{{ hostname.ansible_facts.ansible_fqdn }}/
+        status_code: 200
+      register: output
+
+    - debug: var=output
+
+
+
     
