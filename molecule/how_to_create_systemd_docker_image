@@ -11,3 +11,29 @@ docker build -t <image name> .
 setsebool -P container_manage_cgroup true
 
 docker run -d <image name>
+
+
+2nd method
+
+cat>dockerfile
+FROM centos:8
+EXPOSE 80
+VOLUME ["/sys/fs/cgroup"]
+CMD [ "/sbin/init" 
+
+docker build -t <image name> .
+docker run -d --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro -p 8000:80 <image name>
+docker exec -it <container name> bash
+
+
+
+3nd method
+cat>dockerfile
+FROM centos:8
+EXPOSE 80
+VOLUME ["/sys/fs/cgroup"]
+CMD ["/usr/lib/systemd/systemd"]
+
+docker build -t <image name> .
+docker run -d --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro -p 8000:80 <image name>
+docker exec -it <container name> bash
