@@ -46,7 +46,8 @@
       register: output
     
     - debug: var=output
-       - setup:
+    
+    - setup:
         filter: ansible_fqdn
       register: hostname
 
